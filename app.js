@@ -6,6 +6,12 @@ const ctx = canvas.getContext('2d');
 const els = {
   roundLabel: document.getElementById('roundLabel'),
   scoreLabel: document.getElementById('scoreLabel'),
+  streakLabel: document.getElementById('streakLabel'),
+  scorePercent: document.getElementById('scorePercent'),
+  correctCount: document.getElementById('correctCount'),
+  attemptCount: document.getElementById('attemptCount'),
+  currentStreak: document.getElementById('currentStreak'),
+  bestStreak: document.getElementById('bestStreak'),
   promptText: document.getElementById('promptText'),
   similarButton: document.getElementById('similarButton'),
   differentButton: document.getElementById('differentButton'),
@@ -15,6 +21,8 @@ const els = {
   revealPanel: document.getElementById('revealPanel'),
   resultLabel: document.getElementById('resultLabel'),
   resultText: document.getElementById('resultText'),
+  resultDetail: document.getElementById('resultDetail'),
+  verdictBurst: document.getElementById('verdictBurst'),
   includeFCheckbox: document.getElementById('includeFCheckbox'),
   showAxisCheckbox: document.getElementById('showAxisCheckbox'),
   wiggleSlider: document.getElementById('wiggleSlider'),
@@ -28,6 +36,8 @@ const els = {
 const colors = {
   blue: '#2557c7',
   red: '#d33838',
+  green: '#1f7a4d',
+  amber: '#9a671d',
   ink: '#202328',
   muted: '#8a8175',
   axis: '#bfb5a8',
@@ -40,6 +50,8 @@ const state = {
   round: 0,
   attempts: 0,
   correct: 0,
+  streak: 0,
+  bestStreak: 0,
   history: [],
   revealed: false,
   roundData: null,
@@ -168,6 +180,9 @@ function startRound() {
   els.differentButton.disabled = false;
   els.similarButton.className = 'answer-button';
   els.differentButton.className = 'answer-button';
+  els.revealPanel.className = 'reveal-panel';
+  els.verdictBurst.className = 'verdict-burst';
+  els.resultDetail.textContent = '';
   updateLabels();
   drawGraph();
 }
@@ -176,6 +191,8 @@ function resetGame() {
   state.round = 0;
   state.attempts = 0;
   state.correct = 0;
+  state.streak = 0;
+  state.bestStreak = 0;
   state.history = [];
   renderHistory();
   startRound();
@@ -188,7 +205,13 @@ function answer(userSaysSimilar) {
 
   state.revealed = true;
   state.attempts += 1;
-  if (gotIt) state.correct += 1;
+  if (gotIt) {
+    state.correct += 1;
+    state.streak += 1;
+    state.bestStreak = Math.max(state.bestStreak, state.streak);
+  } else {
+    state.streak = 0;
+  }
 
   state.history.unshift({
     round: state.round,
@@ -205,11 +228,19 @@ function answer(userSaysSimilar) {
     (userSaysSimilar ? els.similarButton : els.differentButton).classList.add('incorrect');
   }
 
-  els.resultLabel.textContent = gotIt ? 'Correct' : 'Answer';
-  els.resultText.textContent = correctAnswer
-    ? 'Qualitatively similar'
-    : 'Qualitatively different';
-  els.promptText.textContent = gotIt ? 'Nice. The sign-state sequences agree.' : 'Close look: the sign-state sequences differ.';
+  els.resultLabel.textContent = gotIt ? 'Correct' : 'Not quite';
+  els.resultText.textContent = gotIt ? 'Correct!' : 'Not quite';
+  els.resultDetail.textContent = correctAnswer
+    ? 'The curves are qualitatively similar.'
+    : 'The curves are qualitatively different.';
+  els.promptText.textContent = gotIt
+    ? celebratoryPrompt()
+    : 'Close look: the sign-state sequences differ.';
+  els.revealPanel.classList.toggle('is-correct', gotIt);
+  els.revealPanel.classList.toggle('is-incorrect', !gotIt);
+  els.verdictBurst.classList.toggle('is-correct', gotIt);
+  els.verdictBurst.classList.toggle('is-incorrect', !gotIt);
+  playAnswerSound(gotIt);
   els.revealPanel.hidden = false;
   els.answerKey.hidden = false;
 
@@ -222,6 +253,48 @@ function answer(userSaysSimilar) {
 function updateLabels() {
   els.roundLabel.textContent = `Round ${state.round}`;
   els.scoreLabel.textContent = `${state.correct} / ${state.attempts}`;
+  els.streakLabel.textContent = `Streak ${state.streak}`;
+  els.correctCount.textContent = state.correct;
+  els.attemptCount.textContent = state.attempts;
+  els.currentStreak.textContent = state.streak;
+  els.bestStreak.textContent = state.bestStreak;
+  els.scorePercent.textContent = state.attempts === 0
+    ? '0%'
+    : `${Math.round((state.correct / state.attempts) * 100)}%`;
+}
+
+function celebratoryPrompt() {
+  if (state.streak >= 5) return `On fire: ${state.streak} in a row.`;
+  if (state.streak >= 3) return `Streak ${state.streak}. The signs are lining up.`;
+  return 'Nice. The sign-state sequences agree.';
+}
+
+function playAnswerSound(gotIt) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+
+  const audio = playAnswerSound.audio || new AudioContext();
+  playAnswerSound.audio = audio;
+  if (audio.state === 'suspended') audio.resume();
+
+  const now = audio.currentTime;
+  const notes = gotIt
+    ? [523.25, 659.25, 783.99]
+    : [220, 174.61];
+
+  notes.forEach((frequency, index) => {
+    const start = now + index * 0.09;
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.type = gotIt ? 'sine' : 'triangle';
+    oscillator.frequency.setValueAtTime(frequency, start);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(gotIt ? 0.10 : 0.075, start + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.16);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start(start);
+    oscillator.stop(start + 0.18);
+  });
 }
 
 function renderHistory() {
