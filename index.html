@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f4ed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PolyQual">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
+  <title>The PolyQual Game</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/polyqual-icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="play-area" aria-labelledby="game-title">
+      <div class="top-bar">
+        <div>
+          <p class="eyebrow">Qualitative analysis</p>
+          <h1 id="game-title">The PolyQual Game</h1>
+        </div>
+        <div class="score-strip" aria-label="Score">
+          <span id="roundLabel">Round 1</span>
+          <span id="scoreLabel">0 / 0</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="graphCanvas" width="1200" height="720" aria-label="Two polynomial curves"></canvas>
+      </div>
+
+      <div class="question-row" id="questionRow">
+        <p id="promptText">Are the blue and red curves qualitatively similar?</p>
+        <div class="answer-buttons" aria-label="Answer">
+          <button class="answer-button" id="similarButton" type="button">Similar</button>
+          <button class="answer-button" id="differentButton" type="button">Different</button>
+        </div>
+      </div>
+
+      <section class="reveal-panel" id="revealPanel" aria-live="polite" hidden>
+        <div>
+          <p class="result-label" id="resultLabel">Result</p>
+          <p class="result-text" id="resultText"></p>
+        </div>
+        <button class="primary-button" id="nextButton" type="button">Next Round</button>
+      </section>
+    </section>
+
+    <aside class="side-panel" aria-label="Game controls">
+      <div class="control-group">
+        <label class="switch-row">
+          <input id="includeFCheckbox" type="checkbox">
+          <span>Include sign of f</span>
+        </label>
+        <label class="switch-row">
+          <input id="showAxisCheckbox" type="checkbox">
+          <span>Show zero line</span>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <label for="wiggleSlider">Curve difference</label>
+        <input id="wiggleSlider" type="range" min="10" max="90" value="50">
+      </div>
+
+      <div class="control-group compact-buttons">
+        <button id="newRoundButton" type="button">New</button>
+        <button id="resetButton" type="button">Reset</button>
+      </div>
+
+      <section class="answer-key" id="answerKey" hidden>
+        <div class="legend">
+          <span><i class="swatch blue"></i>Blue</span>
+          <span><i class="swatch red"></i>Red</span>
+        </div>
+        <div id="signRows" class="sign-rows"></div>
+        <div class="patterns">
+          <p><span>Blue</span><code id="bluePattern"></code></p>
+          <p><span>Red</span><code id="redPattern"></code></p>
+        </div>
+      </section>
+
+      <section class="history" aria-label="Recent rounds">
+        <h2>Recent</h2>
+        <ol id="historyList"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

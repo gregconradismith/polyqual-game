@@ -1,1 +1,32 @@
-# polyqual-game
+# The PolyQual Game
+
+A MATLAB-free qualitative-analysis game for comparing pairs of polynomial
+curves. It runs as a static web app and can be published directly with GitHub
+Pages.
+
+## GitHub Pages
+
+Publish this folder as the root of a GitHub Pages repository, then open the
+Pages URL on an iPhone in Safari and use Share -> Add to Home Screen.
+
+If this folder is copied into a larger repository, serve it from the repository
+root or from a Pages branch. The app uses relative paths so it also works from a
+project URL such as:
+
+```text
+https://USERNAME.github.io/REPOSITORY/
+```
+
+## Local Preview
+
+From this directory:
+
+```sh
+python3 -m http.server 8765
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8765/
+```
