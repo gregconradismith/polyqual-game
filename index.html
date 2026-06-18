@@ -24,6 +24,7 @@
         <div class="score-strip" aria-label="Score">
           <span id="roundLabel">Round 1</span>
           <span id="scoreLabel">0 / 0</span>
+          <span id="streakLabel">Streak 0</span>
         </div>
       </div>
 
@@ -40,15 +41,29 @@
       </div>
 
       <section class="reveal-panel" id="revealPanel" aria-live="polite" hidden>
-        <div>
+        <div class="verdict-burst" id="verdictBurst">
           <p class="result-label" id="resultLabel">Result</p>
           <p class="result-text" id="resultText"></p>
+          <p class="result-detail" id="resultDetail"></p>
         </div>
         <button class="primary-button" id="nextButton" type="button">Next Round</button>
       </section>
     </section>
 
     <aside class="side-panel" aria-label="Game controls">
+      <section class="score-card" aria-label="Running score">
+        <div class="score-main">
+          <span id="scorePercent">0%</span>
+          <span>accuracy</span>
+        </div>
+        <div class="score-grid">
+          <p><span>Correct</span><strong id="correctCount">0</strong></p>
+          <p><span>Answered</span><strong id="attemptCount">0</strong></p>
+          <p><span>Streak</span><strong id="currentStreak">0</strong></p>
+          <p><span>Best</span><strong id="bestStreak">0</strong></p>
+        </div>
+      </section>
+
       <div class="control-group">
         <label class="switch-row">
           <input id="includeFCheckbox" type="checkbox">
