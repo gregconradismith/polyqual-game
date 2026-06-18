@@ -4,6 +4,10 @@ A MATLAB-free qualitative-analysis game for comparing pairs of polynomial
 curves. It runs as a static web app and can be published directly with GitHub
 Pages.
 
+The game includes optional sound feedback for answers. Use the Sound effects
+toggle in the controls to turn the chimes on or off; the preference is saved in
+the browser.
+
 ## GitHub Pages
 
 Publish this folder as the root of a GitHub Pages repository, then open the

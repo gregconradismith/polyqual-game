@@ -25,6 +25,7 @@ const els = {
   verdictBurst: document.getElementById('verdictBurst'),
   includeFCheckbox: document.getElementById('includeFCheckbox'),
   showAxisCheckbox: document.getElementById('showAxisCheckbox'),
+  soundCheckbox: document.getElementById('soundCheckbox'),
   wiggleSlider: document.getElementById('wiggleSlider'),
   answerKey: document.getElementById('answerKey'),
   signRows: document.getElementById('signRows'),
@@ -52,10 +53,13 @@ const state = {
   correct: 0,
   streak: 0,
   bestStreak: 0,
+  soundEnabled: readSoundPreference(),
   history: [],
   revealed: false,
   roundData: null,
 };
+
+els.soundCheckbox.checked = state.soundEnabled;
 
 function makeRange(start, stop, step) {
   const values = [];
@@ -269,7 +273,25 @@ function celebratoryPrompt() {
   return 'Nice. The sign-state sequences agree.';
 }
 
+function readSoundPreference() {
+  try {
+    return localStorage.getItem('polyqual-sound-enabled') !== 'false';
+  } catch {
+    return true;
+  }
+}
+
+function saveSoundPreference(enabled) {
+  try {
+    localStorage.setItem('polyqual-sound-enabled', String(enabled));
+  } catch {
+    // Ignore storage failures; the in-session setting still works.
+  }
+}
+
 function playAnswerSound(gotIt) {
+  if (!state.soundEnabled) return;
+
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   if (!AudioContext) return;
 
@@ -519,6 +541,10 @@ els.includeFCheckbox.addEventListener('change', () => {
   drawGraph();
 });
 els.showAxisCheckbox.addEventListener('change', drawGraph);
+els.soundCheckbox.addEventListener('change', () => {
+  state.soundEnabled = els.soundCheckbox.checked;
+  saveSoundPreference(state.soundEnabled);
+});
 els.wiggleSlider.addEventListener('input', () => {
   if (!state.revealed) return;
   els.promptText.textContent = 'Use New to draw another pair with this difference setting.';
