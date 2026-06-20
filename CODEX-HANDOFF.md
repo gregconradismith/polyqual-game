@@ -1,4 +1,4 @@
-# PolyQual Game Codex Handoff
+# The PolyQual Game Codex Handoff
 
 Date: 2026-06-18
 

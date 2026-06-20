@@ -1,4 +1,4 @@
-# PolyQual Game Handoff
+# The PolyQual Game Handoff
 
 Date: 2026-06-18
 

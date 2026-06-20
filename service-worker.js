@@ -1,11 +1,12 @@
 'use strict';
 
-const cacheName = 'polyqual-game-v3';
+const cacheName = 'polyqual-game-v5';
 const appShell = [
   './',
   './index.html',
-  './styles.css',
-  './app.js',
+  './further-reading.html',
+  './styles.css?v=2026-06-20-reading',
+  './app.js?v=2026-06-20',
   './manifest.webmanifest',
   './icons/polyqual-icon.svg',
 ];

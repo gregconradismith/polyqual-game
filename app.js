@@ -125,6 +125,7 @@ function generateRound() {
     red,
     blueSigns: signsFor(blue),
     redSigns: signsFor(red),
+    includeF: els.includeFCheckbox.checked,
   };
 }
 
@@ -137,7 +138,7 @@ function signsFor(curve) {
 }
 
 function activeRows() {
-  return els.includeFCheckbox.checked
+  return state.roundData.includeF
     ? ['f', 'df', 'ddf']
     : ['df', 'ddf'];
 }
@@ -386,7 +387,7 @@ function drawGraph() {
   ctx.fillRect(0, 0, width, height);
 
   drawGrid(ctx, padding, plotWidth, plotHeight, yMin, yMax);
-  if (els.includeFCheckbox.checked || els.showAxisCheckbox.checked) {
+  if (state.roundData.includeF || els.showAxisCheckbox.checked) {
     drawZeroLine(ctx, padding, plotWidth, yMin, yMax, plotHeight);
   }
 
@@ -535,8 +536,8 @@ els.nextButton.addEventListener('click', startRound);
 els.newRoundButton.addEventListener('click', startRound);
 els.resetButton.addEventListener('click', resetGame);
 els.includeFCheckbox.addEventListener('change', () => {
-  if (state.revealed) {
-    renderAnswerKey();
+  if (!state.revealed) {
+    state.roundData.includeF = els.includeFCheckbox.checked;
   }
   drawGraph();
 });
