@@ -10,11 +10,7 @@ the browser.
 
 ## GitHub Pages
 
-Live app:
-
-```text
-https://gregconradismith.github.io/polyqual-game/
-```
+Live app: [The PolyQual Game](https://gregconradismith.github.io/polyqual-game/)
 
 Publish this folder as the root of a GitHub Pages repository, then open the
 Pages URL on an iPhone in Safari and use Share -> Add to Home Screen.
