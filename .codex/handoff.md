@@ -1,13 +1,13 @@
 # The PolyQual Game Codex Handoff
 
-Date: 2026-06-18
+Date: 2026-06-21
 
 ## Repository
 
 Local repo on this machine:
 
 ```text
-/Users/greg/Library/CloudStorage/Dropbox/Main/Git/polyqual-game
+/Users/gregconradismith/Git/polyqual-game
 ```
 
 GitHub repo:
@@ -47,7 +47,7 @@ f47701e Add handoff notes
 Current working tree at handoff:
 
 ```text
-Clean before adding this CODEX-HANDOFF.md file.
+Clean before adding the original handoff file.
 ```
 
 Note: `.gitignore` now ignores `.DS_Store`.
@@ -184,6 +184,18 @@ Basic checks after editing:
 node --check app.js
 node --check service-worker.js
 git diff --check
+```
+
+## Migration Readiness Snapshot
+
+- Checked on 2026-06-21 before moving computers.
+- Non-interactive `git fetch --all --prune` completed successfully.
+- Root `README.md` points to `.codex/handoff.md` when a root README exists.
+
+Pre-edit Git state after fetch:
+
+```bash
+## main...origin/main
 ```
 
 ## Suggested Next Improvements
