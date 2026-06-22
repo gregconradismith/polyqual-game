@@ -1,6 +1,6 @@
 # The PolyQual Game Codex Handoff
 
-Date: 2026-06-21
+Date: 2026-06-22
 
 ## Repository
 
@@ -130,6 +130,23 @@ GitHub Pages is configured from:
 
 ```text
 Branch: main
+
+<!-- codex-transfer-snapshot:start -->
+## 2026-06-22 Computer Transfer Snapshot
+
+- Checked on 2026-06-22 from `/Users/greg/Git` before moving computers.
+- Ran `git fetch --all --prune`; `main` is tracking `origin/main` unless this status says otherwise.
+- Origin: `git@github.com:gregconradismith/polyqual-game.git`
+- Latest commit at refresh time: `4e62f1e 2026-06-21 15:45:31 -0400 Refresh Codex handoff for computer migration`
+- On the next machine, read `AGENTS.md` first, then this handoff.
+- The working tree was clean before this handoff refresh; after committing the refresh, `git status --short --branch` should again show only the branch line.
+
+Status before this handoff edit:
+
+```bash
+## main...origin/main
+```
+<!-- codex-transfer-snapshot:end -->
 Folder: / (root)
 ```
 
